@@ -1,0 +1,186 @@
+package rs.sga.gdi18;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.lang.instrument.Instrumentation;
+import java.lang.reflect.Type;
+import java.util.Base64;
+import java.util.List;
+
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+
+import org.hibernate.Session;
+import org.hibernate.query.Query;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonWriter;
+
+import rs.sga.gdi18.hibernate.DataAccessLayer;
+import rs.sga.gdi18.hibernate.TransactionalCode;
+
+@Path("/picture")
+public class PictureServlet {
+	
+	@GET
+	@Path("delete")
+	public String delete() {
+		DataAccessLayer.transactional(new TransactionalCode<Void>() {
+
+			@Override
+			public Void run(Session session) {
+				Query query = session.createQuery("delete from RelatedPicture");
+				query.executeUpdate();
+				
+				query = session.createQuery("delete from Picture");
+				query.executeUpdate();
+				
+				return null;
+			}
+		});
+		
+		return "success";
+	}
+	
+	@POST
+	@Path("save")
+	public String savePicture(String jsonString) {
+		
+        DataAccessLayer.transactional(new TransactionalCode<Void>() {
+
+			@Override
+			public Void run(Session session) {
+				Type type = new TypeToken<Picture>() {}.getType();
+		        Picture picture = new Gson().fromJson(jsonString, type);
+		        
+		        session.save(picture);
+				return null;
+			}
+		});
+        
+        return new Gson().toJson("success");
+	}
+
+	@GET
+	@Path("save2")
+	public String savePicture2() {
+//		delete();
+//		savePicture2();
+		
+		DataAccessLayer.transactional(new TransactionalCode<Void>() {
+
+			@Override
+			public Void run(Session session) {
+//				Picture picture = new Picture();
+//				picture.setArtist("Vincent Van Gogh");
+//				picture.setTitle("The Starry Night");
+//				picture.setDescription("Painted in June 1889, it depicts the view from the east-facing window of his asylum room at Saint-Rémy-de-Provence, just before sunrise, with the addition of an idealized village");
+//				picture.setPictureBlob(getByteArray("E:\\Faks\\Diplomski\\temp\\pic1.jpg"));
+//				picture.setVideoId("8AyfGDagDms");
+//				
+////				picture.addRelatedPicture(new RelatedPicture(getByteArray("E:\\Faks\\Diplomski\\temp\\pic3.jpg")));
+////				picture.addRelatedPicture(new RelatedPicture(getByteArray("E:\\Faks\\Diplomski\\temp\\pic4.jpg")));
+////				picture.addRelatedPicture(new RelatedPicture(getByteArray("E:\\Faks\\Diplomski\\temp\\pic5.jpg")));
+////				picture.addRelatedPicture(new RelatedPicture(getByteArray("E:\\Faks\\Diplomski\\temp\\pic6.jpg")));
+////				picture.addRelatedPicture(new RelatedPicture(getByteArray("E:\\Faks\\Diplomski\\temp\\pic7.jpg")));
+//				
+//				picture.addRelatedPicture(new RelatedPicture(getByteArray("E:\\Faks\\Diplomski\\temp\\vin1.jpg")));
+//				picture.addRelatedPicture(new RelatedPicture(getByteArray("E:\\Faks\\Diplomski\\temp\\vin2.jpg")));
+//				picture.addRelatedPicture(new RelatedPicture(getByteArray("E:\\Faks\\Diplomski\\temp\\vin3.jpg")));
+//				picture.addRelatedPicture(new RelatedPicture(getByteArray("E:\\Faks\\Diplomski\\temp\\pic3.jpg")));
+//				picture.addRelatedPicture(new RelatedPicture(getByteArray("E:\\Faks\\Diplomski\\temp\\pic5.jpg")));
+//				
+//				session.save(picture);
+					
+				return null;
+			}
+			
+		});
+		
+		return "success";
+	}
+	
+	public byte[] getByteArray(String path) {
+		try {
+			File file = new File(path);
+			FileInputStream fis = new FileInputStream(file);
+			byte[] fileBytes = new byte[(int) file.length()];
+			fis.read(fileBytes);
+			
+			fis.close();
+			
+			return fileBytes;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	@GET
+	@Path("save3")
+	public String savePicture3() {
+		DataAccessLayer.transactional(new TransactionalCode<Void>() {
+
+			@Override
+			public Void run(Session session) {
+//				Picture picture = new Picture();
+//				picture.setArtist("Pablo Picasso");
+//				picture.setTitle("The Weeping Woman");
+//				picture.setDescription("It has been in the collection of the Tate Modern in London since 1987, and is currently located at the Tate Modern, London.");
+//				picture.setPictureBlob(getByteArray("E:\\Faks\\Diplomski\\temp\\pic2.jpg"));
+//				picture.setVideoId("xm8OWJIFuT0");
+//				
+//				picture.addRelatedPicture(new RelatedPicture(getByteArray("E:\\Faks\\Diplomski\\temp\\pic3.jpg")));
+//				picture.addRelatedPicture(new RelatedPicture(getByteArray("E:\\Faks\\Diplomski\\temp\\pic4.jpg")));
+//				picture.addRelatedPicture(new RelatedPicture(getByteArray("E:\\Faks\\Diplomski\\temp\\pic5.jpg")));
+//				picture.addRelatedPicture(new RelatedPicture(getByteArray("E:\\Faks\\Diplomski\\temp\\pic6.jpg")));
+//				picture.addRelatedPicture(new RelatedPicture(getByteArray("E:\\Faks\\Diplomski\\temp\\pic7.jpg")));
+//				
+//				session.save(picture);
+			
+				return null;
+			}
+			
+		});
+		
+		return "success";
+	}
+	
+	@GET
+	@Path("pictures")
+	@Produces(value = MediaType.APPLICATION_JSON)
+	public String pictures() {
+		
+		List<Picture> pictures = DataAccessLayer.transactional(new TransactionalCode<List<Picture>>() {
+
+			@Override
+			public List<Picture> run(Session session) {
+				Query query = session.createQuery("from Picture");
+				List<Picture> pictures = query.list();
+				
+				//jebena rekurzija
+				return pictures;
+			}
+			
+		});
+		
+		String ret = new Gson().toJson(pictures);
+		
+//		long heapSize = Runtime.getRuntime().freeMemory();
+		
+		return ret;
+	}
+
+}

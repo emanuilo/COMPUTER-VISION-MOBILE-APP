@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.emanu.diplomskiadmin.SavingActivity"
+    android:background="@drawable/background11">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imageViewSave"
+            android:layout_margin="5dp"
+            android:layout_width="250dp"
+            android:layout_height="300dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:layout_gravity="center_horizontal"
+            />
+
+        <LinearLayout
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:layout_margin="5dp"
+            android:layout_marginTop="15dp"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content">
+
+            <Spinner
+                android:id="@+id/languageSpinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="8" />
+
+            <Button
+                android:id="@+id/addLangButton"
+                android:background="@drawable/white_button_shape"
+                android:onClick="onClickAddLang"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:paddingLeft="4dp"
+                android:drawableLeft="@drawable/ic_add_blue_24dp" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/titleEditText"
+            android:hint="Title"
+            android:textColor="#fff"
+            android:backgroundTint="#fff"
+            android:fontFamily="@font/montserrat_regular"
+            android:textSize="15dp"
+            android:layout_margin="5dp"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:enabled="false"
+            />
+
+        <EditText
+            android:id="@+id/artistEditText"
+            android:hint="Artist"
+            android:textColor="#fff"
+            android:backgroundTint="#fff"
+            android:fontFamily="@font/montserrat_regular"
+            android:textSize="15dp"
+            android:layout_margin="5dp"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:layout_gravity="center"/>
+
+
+        <EditText
+            android:id="@+id/descriptionEditText"
+            android:hint="Description"
+            android:textColor="#fff"
+            android:backgroundTint="#fff"
+            android:fontFamily="@font/montserrat_regular"
+            android:textSize="15dp"
+            android:layout_margin="5dp"
+            android:minLines="4"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:layout_gravity="center"/>
+
+        <EditText
+            android:id="@+id/htmlDescEditText"
+            android:hint="Html description"
+            android:textColor="#fff"
+            android:backgroundTint="#fff"
+            android:fontFamily="@font/montserrat_regular"
+            android:textSize="15dp"
+            android:layout_margin="5dp"
+            android:minLines="4"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:layout_gravity="center"/>
+
+        <EditText
+            android:id="@+id/ytlinkEditText"
+            android:hint="Youtube link"
+            android:textColor="#fff"
+            android:backgroundTint="#fff"
+            android:fontFamily="@font/montserrat_regular"
+            android:textSize="15dp"
+            android:layout_margin="5dp"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:layout_gravity="center"/>
+
+        <EditText
+            android:id="@+id/registerEditText"
+            android:hint="Register number"
+            android:textColor="#fff"
+            android:backgroundTint="#fff"
+            android:fontFamily="@font/montserrat_regular"
+            android:textSize="15dp"
+            android:layout_margin="5dp"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:layout_gravity="center"/>
+
+        <Button
+            android:id="@+id/addRelatedButton"
+            android:layout_width="140dp"
+            android:layout_height="39dp"
+            android:textAllCaps="false"
+            android:drawableLeft="@drawable/ic_add_blue_24dp"
+            android:text="Add photos"
+            android:textColor="@color/blueFontColor"
+            android:fontFamily="@font/montserrat_regular"
+            android:onClick="onClickAddPhotos"
+            android:background="@drawable/white_button_shape"
+            android:drawablePadding="3dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="2dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="25dp"
+            android:enabled="false"
+            android:layout_gravity="center_horizontal"/>
+
+        <com.example.emanu.diplomskiadmin.ExpandableGridView
+            android:id="@+id/gridViewRelatedSave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:horizontalSpacing="3dp"
+            android:numColumns="3"
+            android:verticalSpacing="1dp"
+            />
+
+
+    </LinearLayout>
+
+</ScrollView>

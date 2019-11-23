@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.emanu.diplomskiadmin.SavingActivity"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/blueActionBar"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat">
+
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/ic_arrow_back_white_24dp"
+            android:gravity="left"
+            android:onClick="onClickBack"
+            android:layout_marginRight="@dimen/backButtonPadding"/>
+
+    </android.support.v7.widget.Toolbar>
+
+        <FrameLayout
+            android:id="@+id/fragmentFrame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+
+</LinearLayout>

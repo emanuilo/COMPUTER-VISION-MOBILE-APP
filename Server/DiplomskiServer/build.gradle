@@ -1,0 +1,42 @@
+apply plugin: 'application'
+apply plugin: 'eclipse'
+
+group = 'rs.ac.bg.etf.diplomski'
+version = '1.0-SNAPSHOT'
+description = 'Modular Java REST backend'
+
+mainClassName = 'rs.ac.bg.etf.diplomski.MyServer'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    jerseyVersion = '2.26-b03'
+    jettyVersion = '9.4.10.v20180503'
+}
+
+dependencies {
+    // Database layer
+    compile group: 'org.hibernate', name: 'hibernate-core', version:'5.3.1.Final'
+    runtime group: 'org.postgresql', name: 'postgresql', version:'42.2.2'
+
+    // Jetty HTTP server
+    compile group: 'org.eclipse.jetty', name: 'jetty-server', version:"${jettyVersion}"
+    compile group: 'org.eclipse.jetty', name: 'jetty-servlet', version:"${jettyVersion}"
+
+    // Jersey JAX-RS implementation (for REST)
+    compile group: 'org.glassfish.jersey.core', name: 'jersey-server', version:"${jerseyVersion}"
+    compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet-core', version:"${jerseyVersion}"
+    compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-jetty-http', version:"${jerseyVersion}"
+    // compile group: 'org.glassfish.jersey.media', name: 'jersey-media-json-jackson', version:"${jerseyVersion}"
+	compile group: 'org.json', name: 'json', version: '20180130'
+	
+    // Logging stuff
+    compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version:'2.11.0'
+    
+    implementation 'com.google.code.gson:gson:2.8.2'
+}

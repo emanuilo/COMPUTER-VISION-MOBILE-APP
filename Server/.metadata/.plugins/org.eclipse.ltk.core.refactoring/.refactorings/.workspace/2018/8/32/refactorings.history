@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;gameserver-modular&apos; to &apos;DiplomskiServer&apos;" description="Rename resource &apos;gameserver-modular&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="/gameserver-modular" name="DiplomskiServer" stamp="1533832529513" updateReferences="true"/>
+</session>

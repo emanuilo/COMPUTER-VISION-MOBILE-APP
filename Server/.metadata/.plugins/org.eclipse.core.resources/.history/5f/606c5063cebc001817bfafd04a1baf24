@@ -1,0 +1,418 @@
+package rs.ac.bg.etf.diplomski;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.lang.instrument.Instrumentation;
+import java.lang.reflect.Type;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+
+import org.hibernate.Session;
+import org.hibernate.query.Query;
+import org.json.JSONObject;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonWriter;
+
+import rs.ac.bg.etf.diplomski.hibernate.DataAccessLayer;
+import rs.ac.bg.etf.diplomski.hibernate.TransactionalCode;
+
+@Path("/picture")
+public class MyServlet {
+	private static final String FILENAME_IMAGE_CNT = "_imgCnt.txt";
+	private static int imageCounter = 0;
+	private static String sBaseImageUrl;
+	
+	static {
+        try(final DatagramSocket socket = new DatagramSocket()){
+        	socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
+        	String ip = socket.getLocalAddress().getHostAddress();
+        	sBaseImageUrl = "http://" + ip + ":8080/images/";
+        } catch (SocketException | UnknownHostException e) { e.printStackTrace(); }
+        
+        try {
+        	File file = new File(FILENAME_IMAGE_CNT);
+        	String cnt = "0";
+        	if(!file.exists()) {
+				OutputStream outputStream = new FileOutputStream(file);
+				outputStream.write(cnt.getBytes());
+				outputStream.close();
+        	}
+			BufferedReader br = new BufferedReader(new FileReader(FILENAME_IMAGE_CNT));
+			cnt = br.readLine();
+			imageCounter = Integer.parseInt(cnt);
+			
+		} catch (IOException e) { e.printStackTrace(); }
+	}
+	
+	@GET
+	@Path("delete2")
+	public String delete() {
+		DataAccessLayer.transactional(new TransactionalCode<Void>() {
+
+			@Override
+			public Void run(Session session) {
+				Query query = session.createQuery("delete from RelatedPicture");
+				query.executeUpdate();
+				
+				query = session.createQuery("delete from Picture");
+				query.executeUpdate();
+				
+				return null;
+			}
+		});
+		
+		return "success";
+	}
+	
+	@POST
+	@Path("save")
+	public String savePicture(String jsonString) {
+		
+        DataAccessLayer.transactional(new TransactionalCode<Void>() {
+
+			@Override
+			public Void run(Session session) {
+				try {
+					Type type = new TypeToken<Picture>() {}.getType();
+			        Picture picture = new Gson().fromJson(jsonString, type);
+			        
+//			        String ip = "";
+//			        try(final DatagramSocket socket = new DatagramSocket()){
+//			        	socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
+//			        	ip = socket.getLocalAddress().getHostAddress();
+//			        }
+//			        sBaseImageUrl = "http://" + ip + ":8080/images/";
+			        
+			        for(RelatedPicture relatedPicture : picture.getRelatedPictures()) {
+			        	//save related picture to a file
+			        	byte[] byteArray = Base64.getDecoder().decode(relatedPicture.getPictureBlob());
+			        	
+			        	String fileName = "image" + (imageCounter++) + ".jpg";
+			        	File file = new File("images/" + fileName);
+						OutputStream outputStream = new FileOutputStream(file);
+						outputStream.write(byteArray);
+						outputStream.close();
+			        	
+						relatedPicture.setPictureBlob(sBaseImageUrl + fileName);
+			        }
+			        
+			        //save picture to a file
+			        byte[] byteArray = Base64.getDecoder().decode(picture.getPictureBlob());
+			        
+			        String fileName = "image" + (imageCounter++) + ".jpg";
+		        	File file = new File("images/" + fileName);
+					OutputStream outputStream = new FileOutputStream(file);
+					outputStream.write(byteArray);
+					outputStream.close();
+					
+					picture.setPictureBlob(sBaseImageUrl + fileName);
+					
+					//todo ovde sam stao 
+					//upisi novi imageCounter u file
+					
+					session.save(picture);
+				} catch (IOException e) { e.printStackTrace(); }
+				return null;
+			}
+		});
+        
+        return "Success";
+	}
+
+	@POST
+	@Path("delete")
+	@Consumes(value = MediaType.APPLICATION_JSON)
+	public String deletePicture(String jsonString) {
+		JSONObject jsonObject = new JSONObject(jsonString);
+		int id = jsonObject.getInt("id");
+		
+		DataAccessLayer.transactional(new TransactionalCode<Void>() {
+			
+			@Override
+			public Void run(Session session) {
+				Picture picture = session.find(Picture.class, id);
+				
+				//deleting every related picture from picture
+				for(RelatedPicture relatedPicture : picture.getRelatedPictures()) {
+					String fileName = relatedPicture.getPictureBlob();
+					fileName = fileName.substring(sBaseImageUrl.length(), fileName.length());
+					File file = new File("images/" + fileName);
+					file.delete();
+					
+					session.delete(relatedPicture);
+				}
+				
+				//deleting every content from picture
+				for (Content content : picture.getContentList()) {
+					session.delete(content);
+				}
+				
+				String fileName = picture.getPictureBlob();
+				fileName = fileName.substring(sBaseImageUrl.length(), fileName.length());
+				File file = new File("images/" + fileName);
+				file.delete();
+				
+				session.delete(picture);
+				
+				return null;
+			}
+		});
+		
+		return "Success";
+	}
+	
+	@POST
+	@Path("update")
+	public String updatePicture(String jsonString) {
+		
+		DataAccessLayer.transactional(new TransactionalCode<Void>() {
+			
+			@Override
+			public Void run(Session session) {
+				Type type = new TypeToken<Picture>() {}.getType();
+				Picture picture = new Gson().fromJson(jsonString, type);
+				
+				session.update(picture);
+				
+				return null;
+			}
+		});
+		
+		return "Success";
+	}
+	
+	@GET
+	@Path("picture")
+	@Produces(value = MediaType.APPLICATION_JSON)
+	public String getPicture(@QueryParam("id")int id) {
+		
+		Picture picture = DataAccessLayer.transactional(new TransactionalCode<Picture>() {
+			
+			@Override
+			public Picture run(Session session) {
+				Picture picture = session.find(Picture.class, id);
+				
+				return picture;
+			}
+			
+		});
+		
+		return new Gson().toJson(picture);
+	}
+	
+	@GET
+	@Path("pictures")
+	@Produces(value = MediaType.APPLICATION_JSON)
+	public String getPictures() {
+		
+		List<Picture> pictures = DataAccessLayer.transactional(new TransactionalCode<List<Picture>>() {
+
+			@Override
+			public List<Picture> run(Session session) {
+				Query query = session.createQuery("from Picture");
+				List<Picture> pictures = query.list();
+				
+				
+//				for (Picture picture : pictures) {
+//					picture = (Picture) session.merge(picture);
+					
+//					query = session.createQuery("from Content c where c.picture_id = :id");
+//					query.setParameter("id", picture.getId());
+//					List<Content> contentList = query.list();
+//					picture.setContentList(contentList);
+//				}
+				
+				return pictures;
+			}
+			
+		});
+		
+		//postavljanje liste related pictures na null jer u ovom trenutku nije potrebno dovlaciti sve slike
+//		for(Picture picture : pictures) {
+//			picture.setRelatedPictures(null);
+//		}
+		
+		String ret = new Gson().toJson(pictures);
+		
+//		long heapSize = Runtime.getRuntime().freeMemory();
+		
+		return ret;
+	}
+	
+	@POST
+	@Path("saveRelated")
+	@Consumes(value = MediaType.APPLICATION_JSON)
+	public String saveRelatedPicture(String jsonString) {
+		JSONObject jsonObject = new JSONObject(jsonString);
+		int id = jsonObject.getInt("id");
+		String encodedString = jsonObject.getString("base64");
+		
+		String ret = DataAccessLayer.transactional(new TransactionalCode<String>() {
+			
+			@Override
+			public String run(Session session) {
+				try {
+					Picture picture = session.find(Picture.class, id);
+					RelatedPicture relatedPicture = new RelatedPicture();
+					
+					byte[] byteArray = Base64.getDecoder().decode(encodedString);
+					String fileName = "image" + (imageCounter++) + ".jpg";
+					File file = new File("images/" + fileName);
+					OutputStream outputStream;
+					outputStream = new FileOutputStream(file);
+					outputStream.write(byteArray);
+					outputStream.close();
+					
+					relatedPicture.setPictureBlob(sBaseImageUrl + fileName);
+					
+					picture.addRelatedPicture(relatedPicture);
+					
+					session.save(picture);
+					
+					return sBaseImageUrl + fileName;
+				} catch (IOException e) { e.printStackTrace(); }
+				
+				return null;
+			}
+		});
+		
+		return ret;
+	}
+	
+	
+	@GET
+	@Path("exhibitions")
+	@Produces(value = MediaType.APPLICATION_JSON)
+	public String getExhibitions() {
+		
+		List<Exhibition> exhibitions = DataAccessLayer.transactional(new TransactionalCode<List<Exhibition>>() {
+
+			@Override
+			public List<Exhibition> run(Session session) {
+				Query query = session.createQuery("from Exhibition");
+				List<Exhibition> exhibitions = query.list();
+				
+				return exhibitions;
+			}
+			
+		});
+		
+		String ret = new Gson().toJson(exhibitions);
+		
+		return ret;
+	}
+	
+	
+	@POST
+	@Path("saveExh")
+	public String saveExhibition(String jsonString) {
+        Integer id = DataAccessLayer.transactional(new TransactionalCode<Integer>() {
+
+			@Override
+			public Integer run(Session session) {
+				Type type = new TypeToken<Exhibition>() {}.getType();
+		        Exhibition exhibition = new Gson().fromJson(jsonString, type);
+		        
+				Integer id = (Integer) session.save(exhibition);
+				
+				return id;
+			}
+		});
+        
+        return id + "";
+	}
+	
+	
+	@POST
+	@Path("updateExh")
+	public String updateExhibition(String jsonString) {
+		
+        DataAccessLayer.transactional(new TransactionalCode<Void>() {
+
+			@Override
+			public Void run(Session session) {
+				Type type = new TypeToken<Exhibition>() {}.getType();
+		        Exhibition exhibition = new Gson().fromJson(jsonString, type);
+				
+				session.update(exhibition);
+				
+				return null;
+			}
+		});
+        
+        return "Success";
+	}
+	
+	
+	@POST
+	@Path("deleteExh")
+	@Consumes(value = MediaType.APPLICATION_JSON)
+	public String deleteExhibition(String jsonString) {
+		JSONObject jsonObject = new JSONObject(jsonString);
+		int id = jsonObject.getInt("id");
+		
+		DataAccessLayer.transactional(new TransactionalCode<Void>() {
+
+			@Override
+			public Void run(Session session) {
+				Exhibition exhibition = session.find(Exhibition.class, id);
+				
+				session.delete(exhibition);
+				
+				return null;
+			}
+		});
+		
+		return "Success";
+	}
+	
+	
+	@GET
+	@Path("setOnExh")
+	@Produces(value = MediaType.APPLICATION_JSON)
+	public String getSetOnExhibition() {
+		
+		Exhibition exhibition = DataAccessLayer.transactional(new TransactionalCode<Exhibition>() {
+
+			@Override
+			public Exhibition run(Session session) {
+				Query query = session.createQuery("from Exhibition e where e.isSet = :bool");
+				query.setParameter("bool", true);
+				List<Exhibition> list = query.list();
+				
+				return list.get(0);
+			}
+			
+		});
+		
+		return new Gson().toJson(exhibition);
+	}
+
+}
