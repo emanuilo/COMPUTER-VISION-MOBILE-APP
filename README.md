@@ -30,7 +30,7 @@ Used technologies:
   * Button for more of related images
   * Button for a video about the painting
   * Longer HTML formated description by clicking on the short one
-
+<br/>
 
 ![1](https://user-images.githubusercontent.com/18516460/69900301-caa0f600-1371-11ea-8995-ae60164213de.png)
 ![2](https://user-images.githubusercontent.com/18516460/69900302-cb398c80-1371-11ea-9dbc-0520f9e6d71e.png)
@@ -49,7 +49,7 @@ Used technologies:
   * Adding all the information about the painting
 * Managing the library of inserted paintings (editing, deleting)
 * Managing exhibitions, attaching paintings to a specific exhibition
-
+<br/>
 
 ![1](https://user-images.githubusercontent.com/18516460/69900326-05a32980-1372-11ea-8b5e-85edd7c6bd9c.png)
 ![2](https://user-images.githubusercontent.com/18516460/69900327-05a32980-1372-11ea-90d2-5f1035aefd0a.png)
