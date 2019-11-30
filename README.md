@@ -21,13 +21,12 @@ Used technologies:
 * Glide
 
 ## Client app
-![1](https://user-images.githubusercontent.com/18516460/69900254-641bd800-1371-11ea-9923-8702d4cd0290.png)
-![2](https://user-images.githubusercontent.com/18516460/69900255-641bd800-1371-11ea-9106-a27c5d0f59f4.png)
+![1](https://user-images.githubusercontent.com/18516460/69900301-caa0f600-1371-11ea-8995-ae60164213de.png)
+![2](https://user-images.githubusercontent.com/18516460/69900302-cb398c80-1371-11ea-9dbc-0520f9e6d71e.png)
+![3](https://user-images.githubusercontent.com/18516460/69900303-cb398c80-1371-11ea-8b24-b3a8ba9a572a.png)
+![4](https://user-images.githubusercontent.com/18516460/69900304-cb398c80-1371-11ea-9c09-76ab14c4621c.png)
+![5](https://user-images.githubusercontent.com/18516460/69900305-cbd22300-1371-11ea-853c-8cc0b0f9d7ec.png)
 
-![3](https://user-images.githubusercontent.com/18516460/69900273-8b72a500-1371-11ea-891f-2342b107d117.png)
-
-![4](https://user-images.githubusercontent.com/18516460/69900025-d63eed80-136e-11ea-87d6-eeec06d32706.png)
-![5](https://user-images.githubusercontent.com/18516460/69900026-d63eed80-136e-11ea-8edb-0b8e46fffbe6.png)  
   
   
   
