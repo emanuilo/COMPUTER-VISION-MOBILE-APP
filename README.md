@@ -23,6 +23,15 @@ Used technologies:
 <br/>
 
 ## CLIENT APPLICATION
+### Features
+* Detecting the painting on a wall
+* Showing an additional content in the camera view based on detected painting
+  * Painting name, artist, short description
+  * Button for more of related images
+  * Button for a video about the painting
+  * Longer HTML formated description by clicking on the short one
+
+
 ![1](https://user-images.githubusercontent.com/18516460/69900301-caa0f600-1371-11ea-8995-ae60164213de.png)
 ![2](https://user-images.githubusercontent.com/18516460/69900302-cb398c80-1371-11ea-9dbc-0520f9e6d71e.png)
 ![3](https://user-images.githubusercontent.com/18516460/69900303-cb398c80-1371-11ea-8b24-b3a8ba9a572a.png)
@@ -32,6 +41,16 @@ Used technologies:
 <br/>
  
 ## ADMIN APPLICATION
+### Features
+* Adding new paintings to the database
+  * Detecting a painting on a wall
+  * Cutting the photo around the painting edges
+  * Perspective transform if the painting is captured by the angle
+  * Adding all the information about the painting
+* Managing the library of inserted paintings (editing, deleting)
+* Managing exhibitions, attaching paintings to a specific exhibition
+
+
 ![1](https://user-images.githubusercontent.com/18516460/69900326-05a32980-1372-11ea-8b5e-85edd7c6bd9c.png)
 ![2](https://user-images.githubusercontent.com/18516460/69900327-05a32980-1372-11ea-90d2-5f1035aefd0a.png)
 ![3](https://user-images.githubusercontent.com/18516460/69900328-063bc000-1372-11ea-8b75-de8fae051b0a.png)
