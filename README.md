@@ -57,3 +57,8 @@ Used technologies:
 ![4](https://user-images.githubusercontent.com/18516460/69900329-063bc000-1372-11ea-89b0-be6395deca51.png)
 ![5](https://user-images.githubusercontent.com/18516460/69900330-063bc000-1372-11ea-8a72-7178a5fad8d3.png)
 ![6](https://user-images.githubusercontent.com/18516460/69900331-063bc000-1372-11ea-84fc-983085d86844.png)
+
+<br/>
+
+## SERVER APPLICATION
+Responsible for direct communication with the database using hibernate framework. User and admin application are communicating with the server app over Rest web services. All the data is stored in the database on the server.
