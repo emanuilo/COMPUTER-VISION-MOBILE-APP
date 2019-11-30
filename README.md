@@ -20,22 +20,21 @@ Used technologies:
 * PostgreSQL
 * Glide
 
-## Client app
+<br/>
+
+## CLIENT APPLICATION
 ![1](https://user-images.githubusercontent.com/18516460/69900301-caa0f600-1371-11ea-8995-ae60164213de.png)
 ![2](https://user-images.githubusercontent.com/18516460/69900302-cb398c80-1371-11ea-9dbc-0520f9e6d71e.png)
 ![3](https://user-images.githubusercontent.com/18516460/69900303-cb398c80-1371-11ea-8b24-b3a8ba9a572a.png)
 ![4](https://user-images.githubusercontent.com/18516460/69900304-cb398c80-1371-11ea-9c09-76ab14c4621c.png)
 ![5](https://user-images.githubusercontent.com/18516460/69900305-cbd22300-1371-11ea-853c-8cc0b0f9d7ec.png)
 
-  
-  
-  
-  
-## Admin app 
+<br/>
+ 
+## ADMIN APPLICATION
 ![1](https://user-images.githubusercontent.com/18516460/69900326-05a32980-1372-11ea-8b5e-85edd7c6bd9c.png)
 ![2](https://user-images.githubusercontent.com/18516460/69900327-05a32980-1372-11ea-90d2-5f1035aefd0a.png)
 ![3](https://user-images.githubusercontent.com/18516460/69900328-063bc000-1372-11ea-8b75-de8fae051b0a.png)
 ![4](https://user-images.githubusercontent.com/18516460/69900329-063bc000-1372-11ea-89b0-be6395deca51.png)
 ![5](https://user-images.githubusercontent.com/18516460/69900330-063bc000-1372-11ea-8a72-7178a5fad8d3.png)
 ![6](https://user-images.githubusercontent.com/18516460/69900331-063bc000-1372-11ea-84fc-983085d86844.png)
-
