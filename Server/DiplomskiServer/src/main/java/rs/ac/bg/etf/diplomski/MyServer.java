@@ -23,7 +23,7 @@ public class MyServer {
 		try {
 			DataAccessLayer.initialize();
 
-			server = new Server(8080);  //http server - to je u sustini glassfish u netbeansu
+			server = new Server(8080);  //http server
 			server.setRequestLog(new Slf4jRequestLog());
 			
 			ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
